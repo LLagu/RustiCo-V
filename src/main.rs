@@ -1,6 +1,5 @@
 use std::env;
 use std::fs;
-mod lexer;
 mod token_enum; //TODO: just for testing, remove with for loop in main
 use token_enum::Token;
 use regex::Regex;
@@ -16,7 +15,7 @@ pub fn lex(code: &str) -> Vec<Token> {
     let mut code = code;
 
     while !code.is_empty() {
-        code = code.trim_left();
+        code = code.trim_start();
 
         if let Some(captures) = identifier_re.captures(code) {
             let identifier = captures.get(0).unwrap().as_str().to_owned();
@@ -40,13 +39,6 @@ pub fn lex(code: &str) -> Vec<Token> {
     }
 
     tokens
-}
-
-
-fn current_dir() -> std::io::Result<()> {
-    let path = env::current_dir()?;
-    println!("The current directory is {}", path.display());
-    Ok(())
 }
 
 fn main() {
