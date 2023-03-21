@@ -1,0 +1,1 @@
+cargo run .\src\tests\return_constant.c  

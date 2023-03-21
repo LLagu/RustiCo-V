@@ -2,39 +2,48 @@ use std::env;
 use std::fs;
 mod token_enum; //TODO: just for testing, remove with for loop in main
 use token_enum::Token;
-use regex::Regex;
 
-pub fn lex(code: &str) -> Vec<Token> {
-    let identifier_re = Regex::new(r"^[a-zA-Z_][a-zA-Z0-9_]*").unwrap();
-    let number_re = Regex::new(r"^\d+").unwrap();
-    let symbol_re = Regex::new(r"^(=|==|!=|<=|>=|\+|-|\*|/|\(|\)|\{|\}|\[|\]|;|,)").unwrap();
-
-    let keyword_re = Regex::new(r"^(if|else|for|while|do|return)").unwrap();
-
+fn lex(code: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
-    let mut code = code;
+    let mut code_iterator = code.chars().peekable();
 
-    while !code.is_empty() {
-        code = code.trim_start();
-
-        if let Some(captures) = identifier_re.captures(code) {
-            let identifier = captures.get(0).unwrap().as_str().to_owned();
+    while let Some(&c) = code_iterator.peek() {
+        if c.is_whitespace() {
+            code_iterator.next();
+        } else if c.is_digit(10) {
+            let mut n = c.to_digit(10).unwrap() as usize;
+            code_iterator.next();
+            while let Some(&d) = code_iterator.peek() {
+                if d.is_digit(10) {
+                    n = n * 10 + d.to_digit(10).unwrap() as usize;
+                    code_iterator.next();
+                } else {
+                    break;
+                }
+            }
+            tokens.push(Token::Integer(n));
+        } else if c.is_alphabetic() {
+            let mut identifier = String::new();
+            identifier.push(c);
+            code_iterator.next();
+            while let Some(&d) = code_iterator.peek() {
+                if d.is_alphanumeric() || d == '_' {
+                    identifier.push(d);
+                    code_iterator.next();
+                } else {
+                    break;
+                }
+            }
             tokens.push(Token::Identifier(identifier));
-            code = &code[captures.get(0).unwrap().end()..];
-        } else if let Some(captures) = number_re.captures(code) {
-            let number = captures.get(0).unwrap().as_str().to_owned();
-            tokens.push(Token::Number(number));
-            code = &code[captures.get(0).unwrap().end()..];
-        } else if let Some(captures) = symbol_re.captures(code) {
-            let symbol = captures.get(0).unwrap().as_str().to_owned();
-            tokens.push(Token::Symbol(symbol));
-            code = &code[captures.get(0).unwrap().end()..];
-        } else if let Some(captures) = keyword_re.captures(code) {
-            let keyword = captures.get(0).unwrap().as_str().to_owned();
-            tokens.push(Token::Keyword(keyword));
-            code = &code[captures.get(0).unwrap().end()..];
         } else {
-            panic!("Invalid character: {}", code.chars().next().unwrap());
+            match c {
+                '(' => { tokens.push(Token::OpenParenthesis); code_iterator.next(); },
+                ')' => { tokens.push(Token::ClosedParenthesis); code_iterator.next(); },
+                '{' => { tokens.push(Token::OpenBracket); code_iterator.next(); },
+                '}' => { tokens.push(Token::ClosedBracket); code_iterator.next(); },
+                ';' => { tokens.push(Token::Semicolon); code_iterator.next(); },
+                _ => panic!("Unexpected character: {}", c),
+            }
         }
     }
 
@@ -53,13 +62,5 @@ fn main() {
 
 
     let tokens = lex(&code);
-
-    for token in tokens {
-        match token {
-            token_enum::Token::Identifier(identifier) => println!("Identifier: {}", identifier),
-            token_enum::Token::Number(number) => println!("Number: {}", number),
-            token_enum::Token::Symbol(symbol) => println!("Symbol: {}", symbol),
-            token_enum::Token::Keyword(keyword) => println!("Keyword: {}", keyword),
-        }
-    }
+    println!("{:#?}", tokens);
 }

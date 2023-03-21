@@ -1,6 +1,10 @@
+#[derive(Debug)]
 pub enum Token {
+    Integer(usize),
     Identifier(String),
-    Number(String),
-    Symbol(String),
-    Keyword(String),
+    OpenParenthesis, 
+    ClosedParenthesis, 
+    OpenBracket, 
+    ClosedBracket,  
+    Semicolon,
 }
