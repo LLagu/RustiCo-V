@@ -2,9 +2,9 @@
 pub enum Token {
     Integer(usize),
     Identifier(String),
-    ClosedParenthesis, 
-    ClosedBracket,  
     OpenParenthesis, 
+    ClosedParenthesis, 
     OpenBracket, 
+    ClosedBracket,  
     Semicolon,
 }

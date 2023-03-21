@@ -6,18 +6,18 @@ use token_enum::Token;
 
 fn lex(code: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
-    let mut chars = code.chars().peekable();
+    let mut code_iterator = code.chars().peekable();
 
-    while let Some(&c) = chars.peek() {
+    while let Some(&c) = code_iterator.peek() {
         if c.is_whitespace() {
-            chars.next();
+            code_iterator.next();
         } else if c.is_digit(10) {
             let mut n = c.to_digit(10).unwrap() as usize;
-            chars.next();
-            while let Some(&d) = chars.peek() {
+            code_iterator.next();
+            while let Some(&d) = code_iterator.peek() {
                 if d.is_digit(10) {
                     n = n * 10 + d.to_digit(10).unwrap() as usize;
-                    chars.next();
+                    code_iterator.next();
                 } else {
                     break;
                 }
@@ -26,11 +26,11 @@ fn lex(code: &str) -> Vec<Token> {
         } else if c.is_alphabetic() {
             let mut identifier = String::new();
             identifier.push(c);
-            chars.next();
-            while let Some(&d) = chars.peek() {
+            code_iterator.next();
+            while let Some(&d) = code_iterator.peek() {
                 if d.is_alphanumeric() || d == '_' {
                     identifier.push(d);
-                    chars.next();
+                    code_iterator.next();
                 } else {
                     break;
                 }
@@ -38,11 +38,11 @@ fn lex(code: &str) -> Vec<Token> {
             tokens.push(Token::Identifier(identifier));
         } else {
             match c {
-                ')' => { tokens.push(Token::ClosedParenthesis); chars.next(); },
-                '}' => { tokens.push(Token::ClosedBracket); chars.next(); },
-                '(' => { tokens.push(Token::OpenParenthesis); chars.next(); },
-                '{' => { tokens.push(Token::OpenBracket); chars.next(); },
-                ';' => { tokens.push(Token::Semicolon); chars.next(); },
+                '(' => { tokens.push(Token::OpenParenthesis); code_iterator.next(); },
+                ')' => { tokens.push(Token::ClosedParenthesis); code_iterator.next(); },
+                '{' => { tokens.push(Token::OpenBracket); code_iterator.next(); },
+                '}' => { tokens.push(Token::ClosedBracket); code_iterator.next(); },
+                ';' => { tokens.push(Token::Semicolon); code_iterator.next(); },
                 _ => panic!("Unexpected character: {}", c),
             }
         }
@@ -64,12 +64,4 @@ fn main() {
 
     let tokens = lex(&code);
     println!("{:#?}", tokens);
-    // for token in tokens {
-    //     match token {
-    //         token_enum::Token::Identifier(identifier) => println!("Identifier: {}", identifier),
-    //         token_enum::Token::Number(number) => println!("Number: {}", number),
-    //         token_enum::Token::Symbol(symbol) => println!("Symbol: {}", symbol),
-    //         token_enum::Token::Keyword(keyword) => println!("Keyword: {}", keyword),
-    //     }
-    // }
 }
