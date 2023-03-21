@@ -1,6 +1,5 @@
 use std::env;
 use std::fs;
-mod lexer;
 mod token_enum; //TODO: just for testing, remove with for loop in main
 use token_enum::Token;
 
