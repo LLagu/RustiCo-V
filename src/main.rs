@@ -18,7 +18,7 @@ fn main() {
     let mut tokens = lexer::lex(&code);
     println!("{:#?}", tokens);
 
-    let ast = parser::parse_statement(&mut tokens);
+    let ast = parser::parse_program(&mut tokens);
     println!("{:#?}", ast);
 
 }

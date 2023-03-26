@@ -1,4 +1,10 @@
 # RustiCo-V
-Simple C compiler written in Rust. Personal project. Most of the work is done locally, this repo is just a safety backup for the moment.
-Lexer function done.
-Working on the parser and AST creation.
+Simple C compiler written in Rust. The assembly generated will be RISC-V assembly.
+
+This is a personal project to learn compiler basics. Both lexer and parser are written from scratch.
+Currently the only supported type of programs are of type:
+
+"int main() { return 0; }"
+
+Assembly generation coming soon.
+Full of TODOs and temporary solutions.
