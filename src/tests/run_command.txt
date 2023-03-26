@@ -1,1 +1,5 @@
+Linux and other Unix-like OS
+cargo run ./src/tests/return_constant.c  
+
+Windows
 cargo run .\src\tests\return_constant.c  
