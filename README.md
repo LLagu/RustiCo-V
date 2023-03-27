@@ -1,7 +1,8 @@
 # RustiCo-V
-Simple C compiler written in Rust. The assembly generated will be RISC-V assembly.
+Simple C compiler written in Rust. The assembly generated is RISC-V assembly.
 
-This is a personal project to learn compiler basics. Both lexer and parser are written from scratch.
+This is a personal project to learn compiler basics. Full of TODOs and temporary solutions. 
+Lexer, parser and assembler generator are written from scratch.
 Currently the only supported type of programs are of type:
 ```
 int main() { 
@@ -16,9 +17,17 @@ as the implemented grammar is:
 <statement> ::= "return" <exp> ";"
 <exp> ::= <int>
 ```
+The generated assembly is
+```
+.section .text
 
-Assembly generation coming soon.
-Full of TODOs and temporary solutions.
+.global main
+.type main, @function
 
-Following Nora Sandler's C compiler guide written in COBOL (https://norasandler.com/2017/11/29/Write-a-Compiler.html)
+main:
+	li		a0, 0
+	jr		ra
+```
+
+Loosely following Nora Sandler's C compiler guide written in COBOL (https://norasandler.com/2017/11/29/Write-a-Compiler.html)
 

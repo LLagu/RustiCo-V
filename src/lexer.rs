@@ -1,5 +1,5 @@
-use std::iter::Peekable;
 use crate::token_enum::Token;
+use std::iter::Peekable;
 
 pub fn lex(code: &str) -> Peekable<std::vec::IntoIter<Token>> {
     let mut tokens = Vec::new();
@@ -35,16 +35,30 @@ pub fn lex(code: &str) -> Peekable<std::vec::IntoIter<Token>> {
             tokens.push(Token::Identifier(identifier));
         } else {
             match c {
-                '(' => { tokens.push(Token::OpenParenthesis); code_iterator.next(); },
-                ')' => { tokens.push(Token::ClosedParenthesis); code_iterator.next(); },
-                '{' => { tokens.push(Token::OpenBracket); code_iterator.next(); },
-                '}' => { tokens.push(Token::ClosedBracket); code_iterator.next(); },
-                ';' => { tokens.push(Token::Semicolon); code_iterator.next(); },
+                '(' => {
+                    tokens.push(Token::OpenParenthesis);
+                    code_iterator.next();
+                }
+                ')' => {
+                    tokens.push(Token::ClosedParenthesis);
+                    code_iterator.next();
+                }
+                '{' => {
+                    tokens.push(Token::OpenBracket);
+                    code_iterator.next();
+                }
+                '}' => {
+                    tokens.push(Token::ClosedBracket);
+                    code_iterator.next();
+                }
+                ';' => {
+                    tokens.push(Token::Semicolon);
+                    code_iterator.next();
+                }
                 _ => panic!("Unexpected character: {}", c),
             }
         }
     }
 
-    
     tokens.into_iter().peekable()
 }
