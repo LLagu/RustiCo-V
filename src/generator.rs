@@ -1,10 +1,10 @@
 use crate::ast_enum::AstNode;
-use std::{fs, process::Command};
 use std::io::Error;
+use std::{fs, process::Command};
 
 use std::env;
 
-fn print_to_file(file: &str, file_name: &str) -> Result<(), Error> {
+fn print_to_out_folder(file: &str, file_name: &str) -> Result<(), Error> {
     let cwd = env::current_dir()?;
     let path = cwd.join("out").join(format!("{}.s", file_name));
     fs::create_dir_all(path.parent().unwrap())?; // create the directory if it doesn't exist
@@ -36,16 +36,17 @@ pub fn generate_assembly(ast: AstNode) -> String {
 
 pub fn generate_executable(code_string: AstNode, file_name: String) {
     let assembly = generate_assembly(code_string);
-    print_to_file(&assembly, &file_name);
+    print_to_out_folder(&assembly, &file_name);
 
-    let output = Command::new("")
-        .arg(format!("/src/out/{}.s", &file_name))
+    let output = Command::new("riscv64-linux-gnu-gcc")
+        .arg("-c")
+        .arg(format!("out/{}.s", &file_name))
         .arg("-o")
-        .arg(format!("{}", &file_name))
+        .arg(format!("out/{}.o", &file_name))
         .output()
         .expect("failed to convert the assembly to an executable");
 
         println!("status: {}", output.status);
         println!("stdout: {:?}", String::from_utf8(output.stdout));
-        println!("stderr: {:?}", String::from_utf8(output.stderr));   
+        println!("stderr: {:?}", String::from_utf8(output.stderr));  
 }

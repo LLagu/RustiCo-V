@@ -29,5 +29,11 @@ main:
 	jr		ra
 ```
 
+Prerequisites:
+
+RISC-V toolchain and its dependencies:
+https://github.com/riscv-collab/riscv-gnu-toolchain
+
+
 Loosely following Nora Sandler's C compiler guide written in COBOL (https://norasandler.com/2017/11/29/Write-a-Compiler.html)
 

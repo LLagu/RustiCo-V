@@ -59,9 +59,9 @@ pub fn parse_function(tokens: &mut Peekable<std::vec::IntoIter<Token>>) -> Resul
         return Err(format!("Expected return but found [add token type here]"));
     }
     // Work in progress
-    // let mut function_main = "";
+    // let mut function_name = "";
     // match tok {
-    //     Token::Identifier(s) => function_main = &s,
+    //     Token::Identifier(s) => function_name = &s,
     //     _ => {
     //         return Err(format!("Expected return but found [add token type here]"));
     //     }
@@ -100,7 +100,7 @@ pub fn parse_program(tokens: &mut Peekable<std::vec::IntoIter<Token>>) -> Result
     let function = parse_function(tokens);
     let program = AstNode::Program(Box::new(function.unwrap()));
 
-    if (true) {
+    if true {
         return Ok(program);
     } else {
         return Err(format!("You should't be here"));
