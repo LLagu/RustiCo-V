@@ -1,5 +1,4 @@
-use std::env;
-use std::fs;
+use std::{env, fs};
 mod ast_enum;
 mod generator;
 mod lexer;
@@ -21,5 +20,5 @@ fn main() {
     let ast = parser::parse_program(&mut tokens);
     println!("{:#?}", ast);
 
-    generator::generate_assembly(ast.unwrap(), "return_constant".to_string());
+    generator::generate_executable(ast.unwrap(), "return_constant".to_string());
 }
