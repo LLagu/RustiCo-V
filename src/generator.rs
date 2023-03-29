@@ -1,11 +1,18 @@
 use crate::ast_enum::AstNode;
 use std::{fs, process::Command};
+use std::io::Error;
 
-fn print_to_file(file: &str, file_name: &str) {
-    fs::write(format!("{}.s", file_name), file);
+use std::env;
+
+fn print_to_file(file: &str, file_name: &str) -> Result<(), Error> {
+    let cwd = env::current_dir()?;
+    let path = cwd.join("out").join(format!("{}.s", file_name));
+    fs::create_dir_all(path.parent().unwrap())?; // create the directory if it doesn't exist
+    fs::write(&path, file)?;
+    Ok(())
 }
 
-fn generate_assembly(ast: AstNode) -> String {
+pub fn generate_assembly(ast: AstNode) -> String {
     match ast {
         AstNode::Program(f) => {
             let code = generate_assembly(*f);

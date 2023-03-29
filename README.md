@@ -2,7 +2,7 @@
 Simple C compiler written in Rust. The assembly generated is RISC-V assembly.
 
 This is a personal project to learn compiler basics. Full of TODOs and temporary solutions. 
-Lexer, parser and assembler generator are written from scratch.
+Lexer, parser and assembler generator are written from scratch. Works on Linux only.
 Currently the only supported type of programs are of type:
 ```
 int main() { 
